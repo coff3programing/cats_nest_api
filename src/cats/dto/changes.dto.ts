@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsIn,
   IsNumber,
@@ -39,6 +40,11 @@ export class DataCatsDto {
   @IsString()
   @IsOptional()
   moniker?: string;
+
+  @IsString({ each: true })
+  @IsArray()
+  @IsOptional()
+  tags: string[];
 
   @IsBoolean()
   @IsOptional()

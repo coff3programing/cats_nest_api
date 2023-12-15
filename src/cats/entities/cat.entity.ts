@@ -1,4 +1,10 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Cat {
@@ -32,11 +38,22 @@ export class Cat {
   @Column({ type: 'bool' })
   status: boolean;
 
+  @Column({ type: 'text', array: true, default: [] })
+  tags: string[];
+
   //! Creando un procedimiento antes de la inserción a la DB
   @BeforeInsert()
   checkMonikerInsert() {
     this.moniker ??= this.name;
 
+    this.moniker = this.moniker
+      .toLowerCase()
+      .replaceAll(' ', '_')
+      .replaceAll("'", '');
+  }
+
+  @BeforeUpdate()
+  checkMonikerUpdate() {
     this.moniker = this.moniker
       .toLowerCase()
       .replaceAll(' ', '_')
